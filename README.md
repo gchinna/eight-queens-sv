@@ -4,7 +4,7 @@ https://en.wikipedia.org/wiki/Eight_queens_puzzle
 ## EDA playground: 
 https://www.edaplayground.com/x/3f9p
 
-## VCS found 89/92 solutions in 1000 random trials:
+## VCS found 90/92 solutions in 1000 random trials:
 ```
 START EQ TEST ...
 === RAND EIGHT QUEENS (0) ===
