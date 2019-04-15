@@ -16,7 +16,7 @@ class eight_queens;
 
           // only one queen can be placed in diagonal direction
           // [r1, c1] and [r2, c2] are diagonally placed when distance along x-axis and y-axis are equal AND 
-          // they are NOT the same spot
+          // they are NOT in the same spot
           !(r2 == r1 && c2 == c1) && 
           (`MAX(r1, r2) - `MIN(r1, r2)) == (`MAX(c1, c2) - `MIN(c1, c2)) -> cbm[r2][c2] == 1'b0;
         } // foreach
@@ -26,7 +26,19 @@ class eight_queens;
 
   // total number of queens should be equal to 8 - one queen per row/column
   constraint num_queens_c {
-    cbm.sum() with (int'(item)) == 8;
+      // both VCS 2014.10 and IES 15.20 don't support this 2-D iterative syntax 
+      // though it seems to be valid as per LRM
+      //cbm.sum() with (item.sum() with (int'(item))) == 8;
+    
+      // VCS 2014.10 supports sum() on 2-D array 
+      // IES 15.20 does not support sum() on 2-D array
+    `ifdef SIM_VCS
+      cbm.sum() with (int'(item)) == 8;
+    `else
+      foreach( cbm[row] ) {
+        cbm[row].sum() with (int'(item)) == 1;
+      }
+    `endif // SIM_VCS
   }
 
   // convert to string method
