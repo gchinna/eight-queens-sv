@@ -6,11 +6,15 @@ program eq_test;
     
     $display("START EQ TEST ...");
     // randomize eq repeatedly and print when a unique solution is found.
-    repeat( 1000 ) begin
+    for(int iter = 0; iter < 1000; iter++) begin
+      if( iter %100 == 0 ) begin
+        $display("Iteration = %0d ...", iter);
+      end // if
       uniq = 1'b1;
       eq = new();
       if( ! eq.randomize() ) begin
         $display("ERROR: randomize failed!");
+        $finish;
       end else begin
         foreach( uniq_eqs[ii] ) begin
           if( eq.compare(uniq_eqs[ii]) ) begin
@@ -22,9 +26,10 @@ program eq_test;
           $display("=== RAND EIGHT QUEENS (%0d) ===", uniq_eqs.size());
           $display("%s", eq.convert2string());
           uniq_eqs.push_back( eq );
-        end // if 
+        end // if
       end // if
     end // repeat
+    $display("Unique solutions found = %0d", uniq_eqs.size());
   end // initial
 
 endprogram // eq_test
